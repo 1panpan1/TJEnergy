@@ -1,16 +1,29 @@
 import smtplib
-from utils import log
+from utils import log, EmailConfigException, valid_addr
 from email.mime.text import MIMEText
 from email.header import Header
 
 class email:
-    def __init__(self):
-        self.hostname = "smtp.qq.com"
-        self.hostport = 465
-        self.username = ""
-        self.passcode = ""
-        self.sender_mail = ""
-        self.receiver_mails = ""
+    def __init__(self, hostname, hostport, username, passcode, sender_mail, receiver_mails):
+        if hostname == "" or (0 < hostport <= 65535) is False:
+            log("Hostname and host port is invalid. Check config file.")
+            raise EmailConfigException
+        if username == "" or passcode == "":
+            log("Username and passcode is invalid. Check config file.")
+            raise EmailConfigException
+        if valid_addr(sender_mail) is False:
+            log("Invalid sender email. Check config file.")
+            raise EmailConfigException
+        for receiver in receiver_mails:
+            if valid_addr(receiver) is False:
+                log("Invalid receiver email. Check config file.")
+                raise EmailConfigException
+        self.hostname = hostname
+        self.hostport = hostport
+        self.username = username
+        self.passcode = passcode
+        self.sender_mail = sender_mail
+        self.receiver_mails = receiver_mails
 
     def build_msg(self, subject, content, receivers):
         msg = MIMEText(content, "plain", "utf-8")
