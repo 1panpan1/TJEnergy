@@ -36,7 +36,7 @@ def parse_html(html):
     bs = BeautifulSoup(html, features="html.parser")
     node = bs.find("span", class_="number orange")
     if node is None:
-        log("failed to find the energy value in page")
+        log("failed to find the electricity bill balance in page")
         return None
     else:
         return node.string
@@ -49,9 +49,12 @@ if __name__ == "__main__":
     send_limit = cfg['energy_limit']
     if energy_value is not None:
         energy_value = float(energy_value)
-        log("successfully queried the energy value. Energy value is {}".format(energy_value))
+        log("successfully queried the elictricity bill balance. Electricity bill balance is {}".format(energy_value))
         if  send_limit > 0 and energy_value < send_limit:
             eml_content = {"subject": "622宿舍电费余额不足", "content": "622宿舍电费余额{}元，请及时充值".format(energy_value)}
             eml.send_mail(eml_content)
+        elif send_limit == 0:
+            eml_content = {"subject": "622宿舍电费余额", "content": "622宿舍电费余额{}元".format(energy_value)}
+            eml.send_mail(eml_content)
     else:
-        log("failed to query the energy value")
+        log("failed to query the electricity bill balance")
