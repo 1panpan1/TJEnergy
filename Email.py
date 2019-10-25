@@ -6,7 +6,7 @@ from email.header import Header
 class email:
     def __init__(self, hostname, hostport, username, passcode, sender_mail, receiver_mails):
         if hostname == "" or (0 < hostport <= 65535) is False:
-            log("Hostname and host port is invalid. Check config file.")
+            log("Email hostname and host port is invalid. Check config file.")
             raise EmailConfigException
         if username == "" or passcode == "":
             log("Username and passcode is invalid. Check config file.")

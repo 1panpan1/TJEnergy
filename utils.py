@@ -9,7 +9,7 @@ class ParserConfigException(Exception):
     pass
 
 def log(msg):
-    print("{} {}".format(datetime.now().strftime("%y-%m-%d %H:%M:%S"), msg))
+    print("{}  {}".format(datetime.now().strftime("%y-%m-%d %H:%M:%S"), msg))
 
 def valid_addr(address):
     """
@@ -42,7 +42,10 @@ def load_config(config_file):
         cfg.has_option("parser", "url") is False or \
         cfg.has_option("email", "hostname") is False or \
         cfg.has_option("email", "hostport") is False or \
-        cfg.has_option("energy", "limit") is False:
+        cfg.has_option("energy", "limit") is False or \
+        cfg.has_option("energy", "send_email_weekday") is False or \
+        cfg.has_option("energy", "send_email_hour") is False or \
+        cfg.has_option("energy", "interval") is False:
         log("Parsing config failed.")
         return None
     else:
@@ -54,6 +57,9 @@ def load_config(config_file):
         cfg_dict['email_receiver_emails'] = [x.strip() for x in cfg.get("email", "receiver_emails").split(',')]
         cfg_dict['parser_url'] = cfg.get("parser", "url")
         cfg_dict['energy_limit'] = 0 if cfg.get("energy", "limit") == "" else float(cfg.get("energy", "limit"))
+        cfg_dict['energy_send_email_weekday'] = cfg.get("energy", "send_email_weekday")
+        cfg_dict['energy_send_email_hour'] = cfg.get("energy", "send_email_hour")
+        cfg_dict['energy_interval'] = int(cfg.get("energy", "interval"))
         return cfg_dict
 
 if __name__ == "__main__":

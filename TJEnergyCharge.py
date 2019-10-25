@@ -1,4 +1,5 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 from Email import email
 from utils import log, valid_url, ParserConfigException
@@ -44,17 +45,21 @@ def parse_html(html):
 if __name__ == "__main__":
     cfg_file = "config.ini"
     cfg = load_config(cfg_file)
+    if cfg == None: exit(-1)
     eml = email(cfg['email_hostname'], cfg['email_hostport'], cfg['email_username'], cfg['email_passcode'], cfg['email_sender_email'], cfg['email_receiver_emails'])
-    energy_value = get_energy_value(cfg['parser_url'])
-    send_limit = cfg['energy_limit']
-    if energy_value is not None:
-        energy_value = float(energy_value)
-        log("successfully queried the elictricity bill balance. Electricity bill balance is {}".format(energy_value))
-        if  send_limit > 0 and energy_value < send_limit:
-            eml_content = {"subject": "622宿舍电费余额不足", "content": "622宿舍电费余额{}元，请及时充值".format(energy_value)}
-            eml.send_mail(eml_content)
-        elif send_limit == 0:
-            eml_content = {"subject": "622宿舍电费余额", "content": "622宿舍电费余额{}元".format(energy_value)}
-            eml.send_mail(eml_content)
-    else:
-        log("failed to query the electricity bill balance")
+    while True:
+        energy_value = get_energy_value(cfg['parser_url'])
+        send_limit = cfg['energy_limit']
+        if energy_value is not None:
+            energy_value = float(energy_value)
+            log("successfully queried the elictricity bill balance. Electricity bill balance is {}".format(energy_value))
+            if  send_limit > 0 and energy_value < send_limit:
+                eml_content = {"subject": "622宿舍电费余额不足", "content": "622宿舍电费余额{}元，请及时充值".format(energy_value)}
+                eml.send_mail(eml_content)
+            if time.strftime("%A", time.localtime()) == cfg['energy_send_email_weekday'] and \
+            time.strftime("%H", time.localtime()) == cfg['energy_send_email_hour']:
+                eml_content = {"subject": "622宿舍电费余额", "content": "622宿舍电费余额{}元".format(energy_value)}
+                eml.send_mail(eml_content)
+        else:
+            log("failed to query the electricity bill balance")
+        time.sleep(cfg['energy_interval'])

@@ -1,2 +1,2 @@
-*.ini
-__pycache__/
+config.ini
+**/__pycache__/
