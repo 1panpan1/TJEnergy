@@ -1,0 +1,16 @@
+[email]
+hostname = smtp.qq.com
+hostport = 465
+username = 12345678
+passcode = xxxxxxxxxxxxxxxxx
+sender_email = 1123456789@qq.com
+receiver_emails = 1234567890@qq.com,1234567890@outlook.com
+
+[parser]
+url = http://202.120.163.129:88/default.aspx
+
+[energy]
+; If electricity bill balance is less than `limit`, send email to notify.
+limit = 20
+send_email_weekday = Friday
+send_email_hour = 10
