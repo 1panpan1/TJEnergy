@@ -57,8 +57,8 @@ def load_config(config_file):
         cfg_dict['email_receiver_emails'] = [x.strip() for x in cfg.get("email", "receiver_emails").split(',')]
         cfg_dict['parser_url'] = cfg.get("parser", "url")
         cfg_dict['energy_limit'] = 0 if cfg.get("energy", "limit") == "" else float(cfg.get("energy", "limit"))
-        cfg_dict['energy_send_email_weekday'] = cfg.get("energy", "send_email_weekday")
-        cfg_dict['energy_send_email_hour'] = cfg.get("energy", "send_email_hour")
+        cfg_dict['energy_send_email_weekday'] = [x.strip() for x in cfg.get("energy", "send_email_weekday").split(',')]
+        cfg_dict['energy_send_email_hour'] = [x.strip() for x in cfg.get("energy", "send_email_hour").split(',')]
         cfg_dict['energy_interval'] = int(cfg.get("energy", "interval"))
         return cfg_dict
 

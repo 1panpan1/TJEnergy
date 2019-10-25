@@ -56,8 +56,8 @@ if __name__ == "__main__":
             if  send_limit > 0 and energy_value < send_limit:
                 eml_content = {"subject": "622宿舍电费余额不足", "content": "622宿舍电费余额{}元，请及时充值".format(energy_value)}
                 eml.send_mail(eml_content)
-            if time.strftime("%A", time.localtime()) == cfg['energy_send_email_weekday'] and \
-            time.strftime("%H", time.localtime()) == cfg['energy_send_email_hour']:
+            if time.strftime("%A", time.localtime()) in cfg['energy_send_email_weekday'] and \
+            time.strftime("%H", time.localtime()) in cfg['energy_send_email_hour']:
                 eml_content = {"subject": "622宿舍电费余额", "content": "622宿舍电费余额{}元".format(energy_value)}
                 eml.send_mail(eml_content)
         else:
