@@ -12,5 +12,7 @@ url = http://202.120.163.129:88/default.aspx
 [energy]
 ; If electricity bill balance is less than `limit`, send email to notify.
 limit = 20
-send_email_weekday = Friday
-send_email_hour = 10
+send_email_weekday = Friday, Saturday
+send_email_hour = 10, 11
+; The time interval between querying electricity bill balance. (seconds)
+interval = 1800
