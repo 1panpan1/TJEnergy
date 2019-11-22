@@ -45,7 +45,8 @@ def load_config(config_file):
         cfg.has_option("energy", "limit") is False or \
         cfg.has_option("energy", "send_email_weekday") is False or \
         cfg.has_option("energy", "send_email_hour") is False or \
-        cfg.has_option("energy", "interval") is False:
+        cfg.has_option("energy", "interval") is False or \
+        cfg.has_option("energy", "alert_interval") is False:
         log("Parsing config failed.")
         return None
     else:
@@ -60,6 +61,7 @@ def load_config(config_file):
         cfg_dict['energy_send_email_weekday'] = [x.strip() for x in cfg.get("energy", "send_email_weekday").split(',')]
         cfg_dict['energy_send_email_hour'] = [x.strip() for x in cfg.get("energy", "send_email_hour").split(',')]
         cfg_dict['energy_interval'] = int(cfg.get("energy", "interval"))
+        cfg_dict['energy_alert_interval'] = int(cfg.get("energy", "alert_interval"))
         return cfg_dict
 
 if __name__ == "__main__":

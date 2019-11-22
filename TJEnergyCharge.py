@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	cfg = load_config(cfg_file)
 	if cfg == None: exit(-1)
 	eml = email(cfg['email_hostname'], cfg['email_hostport'], cfg['email_username'], cfg['email_passcode'], cfg['email_sender_email'], cfg['email_receiver_emails'])
-	alert_period = cfg['energy_alert_period'] * 3600 // cfg['energy_interval']
+	alert_interval = cfg['energy_alert_interval'] * 3600 // cfg['energy_interval']
 	alert_countdown = 0
 	while True:
 		energy_value = get_energy_value(cfg['parser_url'])
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 			if  send_limit > 0 and energy_value < send_limit and alert_countdown == 0:
 				eml_content = {"subject": "622宿舍电费余额不足", "content": "622宿舍电费余额{}元，请及时充值".format(energy_value)}
 				eml.send_mail(eml_content)
-				alert_countdown = alert_period
+				alert_countdown = alert_interval
 			if time.strftime("%A", time.localtime()) in cfg['energy_send_email_weekday'] and \
 			time.strftime("%H", time.localtime()) in cfg['energy_send_email_hour']:
 				eml_content = {"subject": "622宿舍电费余额", "content": "622宿舍电费余额{}元".format(energy_value)}
